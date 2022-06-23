@@ -1,10 +1,10 @@
 // Copyright (C) 2015-2022 The Neo Project.
-// 
-// The Neo.Compiler.CSharp is free software distributed under the MIT 
-// software license, see the accompanying file LICENSE in the main directory 
-// of the project or http://www.opensource.org/licenses/mit-license.php 
+//
+// The Neo.Compiler.CSharp is free software distributed under the MIT
+// software license, see the accompanying file LICENSE in the main directory
+// of the project or http://www.opensource.org/licenses/mit-license.php
 // for more details.
-// 
+//
 // Redistribution and use in source and binary forms with or without
 // modifications are permitted.
 
@@ -454,11 +454,7 @@ namespace Neo.Compiler
             {
                 Push(_parameters.Count);
                 Push(Symbol.Name);
-                AddInstruction(new Instruction
-                {
-                    OpCode = OpCode.SYSCALL,
-                    Operand = Encoding.ASCII.GetBytes("Runtime.NoReentry").Sha256()[..4]
-                });
+                Call(ApplicationEngine.System_Runtime_NoReentry);
             }
         }
         private void ConvertModifier(SemanticModel model)
