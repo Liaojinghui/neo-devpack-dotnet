@@ -24,3 +24,5 @@ NC4020 | Naming | Warning | SmartContractMethodNamingAnalyzerUnderline
 NC4021 | Usage | Warning | SupportedStandardsAnalyzer
 NC4022 | Usage | Warning | BigIntegerUsingUsageAnalyzer
 NC4023 | Usage | Error | StaticFieldInitializationAnalyzer
+NC4024 | Usage | Warning | Nep17ContractAnalyzer
+NC4025 | Usage | Warning | Nep11ContractAnalyzer
