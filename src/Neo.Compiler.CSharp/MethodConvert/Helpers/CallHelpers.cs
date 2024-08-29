@@ -255,7 +255,7 @@ internal partial class MethodConvert
     private void HandleInstanceExpression(SemanticModel model, IMethodSymbol symbol, ExpressionSyntax? instanceExpression,
                                         CallingConvention methodCallingConvention, bool beforeArguments)
     {
-        if (symbol.IsStatic) return;
+        if (symbol.IsStatic || symbol.MethodKind == MethodKind.LocalFunction) return;
 
         bool shouldConvert = beforeArguments ? (methodCallingConvention != CallingConvention.Cdecl)
                                              : (methodCallingConvention == CallingConvention.Cdecl);

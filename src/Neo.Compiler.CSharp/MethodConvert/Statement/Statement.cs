@@ -8,6 +8,7 @@
 // Redistribution and use in source and binary forms with or without
 // modifications are permitted.
 
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -90,7 +91,9 @@ namespace Neo.Compiler
                     ConvertLocalDeclarationStatement(model, syntax);
                     break;
                 // Currently, local function statements are not supported in this context.
-                case LocalFunctionStatementSyntax:
+                case LocalFunctionStatementSyntax syntax:
+                    // ConvertLocalFunctionStatement(model, syntax);
+                    Console.WriteLine("");
                     break;
                 // Converts a return statement, used to exit a method and optionally return a value.
                 // Example: return x + y;

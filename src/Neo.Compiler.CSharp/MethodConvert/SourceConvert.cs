@@ -90,6 +90,20 @@ internal partial class MethodConvert
             case ParameterSyntax parameter:
                 ConvertRecordPropertyInitMethod(parameter);
                 break;
+            case LocalFunctionStatementSyntax syntax:
+                if (syntax.ExpressionBody is not null)
+                {
+                    ConvertExpression(model, syntax.ExpressionBody.Expression);
+                }
+                else if (syntax.Body is not null)
+                {
+                    ConvertStatement(model, syntax.Body);
+                }
+                else
+                {
+                    throw new CompilationException(syntax, DiagnosticId.SyntaxNotSupported, "Local function must have either an expression body or a block body.");
+                }
+                break;
             default:
                 throw new CompilationException(SyntaxNode, DiagnosticId.SyntaxNotSupported, $"Unsupported method body:{SyntaxNode}");
         }

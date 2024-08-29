@@ -30,8 +30,10 @@ internal partial class MethodConvert
         if (!symbol.DeclaringSyntaxReferences.IsEmpty)
             syntaxNode = symbol.DeclaringSyntaxReferences[0].GetSyntax();
 
-        if (syntaxNode is not BaseMethodDeclarationSyntax syntax) return false;
-        if (!symbol.GetAttributesWithInherited().Any(attribute => attribute.ConstructorArguments.Length > 0
+        if (syntaxNode is not BaseMethodDeclarationSyntax && syntaxNode is not LocalFunctionStatementSyntax) return false;
+
+        if (symbol.MethodKind != MethodKind.LocalFunction  &&
+            !symbol.GetAttributesWithInherited().Any(attribute => attribute.ConstructorArguments.Length > 0
                                                                   && attribute.AttributeClass?.Name == nameof(MethodImplAttribute)
                                                                   && attribute.ConstructorArguments[0].Value is not null
                                                                   && (MethodImplOptions)attribute.ConstructorArguments[0].Value! == MethodImplOptions.AggressiveInlining))
@@ -39,10 +41,18 @@ internal partial class MethodConvert
 
         _internalInline = true;
 
-        using (InsertSequencePoint(syntax))
+        using (InsertSequencePoint(syntaxNode))
         {
             if (arguments is not null) PrepareArgumentsForMethod(model, symbol, arguments);
-            if (syntax.Body != null) ConvertStatement(model, syntax.Body);
+            switch (syntaxNode)
+            {
+                case BaseMethodDeclarationSyntax { Body: not null } method:
+                    ConvertStatement(model, method.Body);
+                    break;
+                case LocalFunctionStatementSyntax { Body: not null } localFunction:
+                    ConvertStatement(model, localFunction.Body);
+                    break;
+            }
         }
         return true;
     }
